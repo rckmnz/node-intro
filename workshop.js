@@ -6,14 +6,21 @@ function getDistance(pos1, pos2) {
 }
 
 function getIssPosition() {
-  return request(/* ... */)
+  return request('http://api.open-notify.org/iss-now.json')
   .then(
     function(responce) {
       // Parse as JSON
+      var location = JSON.parse(responce);
       // Return object with lat and lng
+      var latitude = location.iss_position.latitude;
+      var longitude = location.iss_position.longitude;
+      
+      console.log(`The latitude is ${latitude} and the longitude is ${longitude}`);
+      return `The latitude is ${latitude} and the longitude is ${longitude}`;
     }
   )
 }
+getIssPosition();
 
 function getAddressPosition(address) {
 
