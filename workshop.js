@@ -8,7 +8,7 @@ function getDistance(pos1, pos2) {
 function getIssPosition() {
   return request('http://api.open-notify.org/iss-now.json')
   .then(
-    function(responce) {
+    (responce) => {
       // Parse as JSON
       var location = JSON.parse(responce);
       // Return object with lat and lng
@@ -19,12 +19,37 @@ function getIssPosition() {
       return `The latitude is ${latitude} and the longitude is ${longitude}`;
     }
   )
+    .catch(
+      (err) =>{console.log('Error! No response from api', err)}
+    )
 }
+
 getIssPosition();
 
 function getAddressPosition(address) {
+  // Got api key from google maps
+  var apiKey ='AIzaSyDvKgqx4hlQwhgWsuN7V7AYNCv8Jg4Uj_U';
+  return request(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`)
+  .then(
+    (response) => {
+      var addressLocation = JSON.parse(response);
+      var latLong = {};
 
+      latLong.lat = addressLocation.results[0].geometry.location.lat;
+      latLong.lng = addressLocation.results[0].geometry.location.lat;
+
+      console.log (addressLocation);
+
+      return latLong;
+    }
+  )
+  .catch(
+    (err) =>{console.log('Error! No response from api', err)}
+  )
 }
+
+console.log(getAddressPosition('80 rue Prince, Montreal, QC H3C 2M8'));
+
 
 function getCurrentTemperatureAtPosition(position) {
 
